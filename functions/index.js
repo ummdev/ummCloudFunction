@@ -14,6 +14,7 @@ const settings = {
   timestampsInSnapshots: true
 };
 firestore.settings(settings);
+
 module.exports.getSuggestion = functions.https.onRequest((req, res) => {
   res.header('Content-Type', 'application/json');
   res.header('Access-Control-Allow-Origin', '*');
@@ -65,5 +66,29 @@ module.exports.addNewPorn = functions.https.onRequest((req, res) => {
     })
   } else if (typeof(req.body.name) !== 'string') {
     res.status(400).send('no Parameter')
+  }
+})
+
+module.exports.getSongsById = functions.https.onRequest((req, res) => {
+  res.header('Content-Type', 'application/json');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  if (typeof(req.query.pornId) === 'string') {
+    firestore
+      .collection('sounds')
+      .where('pornStarId', '==', req.query.pornId)
+      .get()
+      .then((data) => {
+        const listSounds = []
+        data.forEach((value) => {
+          listSounds.push(value.data())
+        })
+        res.status(200).send(listSounds)
+        return
+      }).catch(() => {
+        res.status(500).send("err")
+      })
+  } else if (typeof(req.query.pornId) !== 'string') {
+    res.status(400).send("no parameter")
   }
 })
