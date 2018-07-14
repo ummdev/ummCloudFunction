@@ -13,8 +13,17 @@ const firestore = firebase.firestore();
 const settings = {timestampsInSnapshots: true};
 firestore.settings(settings);
 
-module.exports.getSearchText = functions.https.onRequest((req , res)=>{
-  res.send('Hello')
+module.exports.getSuggestion = functions.https.onRequest((req , res)=>{
+  if(typeof(req.query.name) === 'string'){
+    firestore.collection('pornStars').get().then((data)=>{
+      res.status(200).send(data)
+      return
+    }).catch(()=>{
+      res.status(500).send("err")
+    })
+  }else if(typeof(req.query.name) !== 'string'){
+    res.status(400).send("no parameter")
+  }
 })
 module.exports.addNewSound = functions.https.onRequest((req , res)=>{
   if(typeof(req.body.pornStarId) === 'string' && typeof(req.body.soundURL) === 'string'){
