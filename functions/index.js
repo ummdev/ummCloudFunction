@@ -12,11 +12,14 @@ firebase.initializeApp(config)
 const firestore = firebase.firestore();
 const settings = {timestampsInSnapshots: true};
 firestore.settings(settings);
-
 module.exports.getSuggestion = functions.https.onRequest((req , res)=>{
   if(typeof(req.query.name) === 'string'){
+    const allPornStars = []
     firestore.collection('pornStars').get().then((data)=>{
-      res.status(200).send(data)
+      data.forEach((value)=>{
+        allPornStars.push(value.data())
+      })
+      res.status(200).send(allPornStars)
       return
     }).catch(()=>{
       res.status(500).send("err")
@@ -43,7 +46,7 @@ module.exports.addNewSound = functions.https.onRequest((req , res)=>{
 module.exports.addNewPorn = functions.https.onRequest((req , res)=>{
   if(typeof(req.body.name) === 'string'){
     firestore.collection('pornStars').add({
-      name: req.body.name
+      name: req.body.name.toLowerCase()
     }).then(()=>{
       res.status(200).send('OK')
       return true
