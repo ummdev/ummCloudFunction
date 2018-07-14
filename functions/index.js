@@ -40,7 +40,8 @@ module.exports.addNewSound = functions.https.onRequest((req, res) => {
   if (typeof(req.body.pornStarId) === 'string' && typeof(req.body.soundURL) === 'string') {
     firestore.collection('sounds').add({
       pornStarId: req.body.pornStarId,
-      soundURL: req.body.soundURL
+      soundURL: req.body.soundURL,
+      coverImageURL: req.body.coverImageURL
     }).then(() => {
       res.status(200).send("added")
       return
