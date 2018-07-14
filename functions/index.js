@@ -13,7 +13,6 @@ const firestore = firebase.firestore();
 const settings = {timestampsInSnapshots: true};
 firestore.settings(settings);
 module.exports.getSuggestion = functions.https.onRequest((req , res)=>{
-  if(typeof(req.query.name) === 'string'){
     const allPornStars = []
     firestore.collection('pornStars').get().then((data)=>{
       data.forEach((value)=>{
@@ -24,9 +23,6 @@ module.exports.getSuggestion = functions.https.onRequest((req , res)=>{
     }).catch(()=>{
       res.status(500).send("err")
     })
-  }else if(typeof(req.query.name) !== 'string'){
-    res.status(400).send("no parameter")
-  }
 })
 module.exports.addNewSound = functions.https.onRequest((req , res)=>{
   if(typeof(req.body.pornStarId) === 'string' && typeof(req.body.soundURL) === 'string'){
