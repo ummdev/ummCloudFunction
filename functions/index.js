@@ -13,6 +13,9 @@ const firestore = firebase.firestore();
 const settings = {timestampsInSnapshots: true};
 firestore.settings(settings);
 module.exports.getSuggestion = functions.https.onRequest((req , res)=>{
+  res.header('Content-Type','application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
     const allPornStars = []
     firestore.collection('pornStars').get().then((data)=>{
       data.forEach((value)=>{
@@ -25,6 +28,9 @@ module.exports.getSuggestion = functions.https.onRequest((req , res)=>{
     })
 })
 module.exports.addNewSound = functions.https.onRequest((req , res)=>{
+  res.header('Content-Type','application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
   if(typeof(req.body.pornStarId) === 'string' && typeof(req.body.soundURL) === 'string'){
     firestore.collection('sounds').add({
       pornStarId: req.body.pornStarId,
@@ -40,6 +46,9 @@ module.exports.addNewSound = functions.https.onRequest((req , res)=>{
   }
 })
 module.exports.addNewPorn = functions.https.onRequest((req , res)=>{
+  res.header('Content-Type','application/json');
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
   if(typeof(req.body.name) === 'string'){
     firestore.collection('pornStars').add({
       name: req.body.name.toLowerCase()
