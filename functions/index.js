@@ -17,20 +17,18 @@ module.exports.getSearchText = functions.https.onRequest((req , res)=>{
   res.send("Hello")
 })
 
-module.exports.addNewSong = functions.https.onRequest((req , res)=>{
 
-})
 module.exports.addNewPorn = functions.https.onRequest((req , res)=>{
-  if(typeof(req.query.name) === 'string'){
+  if(typeof(req.body.name) === 'string'){
     firestore.collection('pornStars').add({
-      name: req.query.name
+      name: req.body.name
     }).then(()=>{
-      res.send("OK")
+      res.status(200).send("OK")
       return true
     }).catch(()=>{
-      res.send("err")
+      res.status(500).send("err")
     })
-  }else if(typeof(req.query.name) !== 'string'){
-    res.send("no Parameter")
+  }else if(typeof(req.body.name) !== 'string'){
+    res.status(400).send("no Parameter")
   }
 })
