@@ -21,7 +21,10 @@ module.exports.getSuggestion = functions.https.onRequest((req, res) => {
   const allPornStars = []
   firestore.collection('pornStars').get().then((data) => {
     data.forEach((value) => {
-      allPornStars.push(value.data())
+      allPornStars.push({
+        id: value.id,
+        data: value.data()
+      })
     })
     res.status(200).send(allPornStars)
     return
