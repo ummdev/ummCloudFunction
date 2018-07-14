@@ -16,7 +16,21 @@ firestore.settings(settings);
 module.exports.getSearchText = functions.https.onRequest((req , res)=>{
   res.send('Hello')
 })
-
+module.exports.addNewSound = functions.https.onRequest((req , res)=>{
+  if(typeof(req.body.pornStarId) === 'string' && typeof(req.body.soundURL) === 'string'){
+    firestore.collection('sounds').add({
+      pornStarId: req.body.pornStarId,
+      soundURL: req.body.soundURL
+    }).then(()=>{
+      res.status(200).send("added")
+      return
+    }).catch(()=>{
+      res.status(500).send("Err")
+    })
+  }else if(typeof(req.body.pornStarId) !== 'string' || typeof(req.body.soundURL) !== 'string'){
+    res.status(400).send('no parameter')
+  }
+})
 module.exports.addNewPorn = functions.https.onRequest((req , res)=>{
   if(typeof(req.body.name) === 'string'){
     firestore.collection('pornStars').add({
