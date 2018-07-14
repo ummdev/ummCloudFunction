@@ -23,7 +23,7 @@ module.exports.getSuggestion = functions.https.onRequest((req, res) => {
     data.forEach((value) => {
       allPornStars.push({
         id: value.id,
-        data: value.data()
+        data: value.data().name
       })
     })
     res.status(200).send(allPornStars)
