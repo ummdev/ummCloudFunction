@@ -93,3 +93,22 @@ module.exports.getSongsById = functions.https.onRequest((req, res) => {
     res.status(400).send("no parameter")
   }
 })
+
+module.exports.getSearch = functions.https.onRequest((req, res) => {
+  res.header('Content-Type', 'application/json');
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Headers', 'Content-Type');
+  firestore.collection('tag').doc('eVF8kddt3jXfGrjkDMF4').get().then((data) => {
+    const dataset = data.data()['0']
+    const item = dataset[Math.floor(Math.random() * dataset.length)];
+    res.status(200).json({
+      success: true,
+      massage: item
+    })
+    return
+  }).catch(() => {
+    res.status(500).json({
+      success: false
+    })
+  })
+})
